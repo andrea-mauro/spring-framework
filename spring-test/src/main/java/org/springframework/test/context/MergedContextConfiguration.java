@@ -288,10 +288,10 @@ public class MergedContextConfiguration implements Serializable {
 			@Nullable MergedContextConfiguration parent) {
 
 		this.testClass = testClass;
-		this.locations = processStrings(locations);
+		this.locations = processUniqueStrings(locations);
 		this.classes = processClasses(classes);
 		this.contextInitializerClasses = processContextInitializerClasses(contextInitializerClasses);
-		this.activeProfiles = processActiveProfiles(activeProfiles);
+		this.activeProfiles = processUniqueStrings(activeProfiles);
 		this.propertySourceDescriptors = Collections.unmodifiableList(propertySourceDescriptors);
 		this.propertySourceLocations = this.propertySourceDescriptors.stream()
 				.map(PropertySourceDescriptor::locations)
@@ -597,13 +597,13 @@ public class MergedContextConfiguration implements Serializable {
 				Collections.unmodifiableSet(contextCustomizers) : EMPTY_CONTEXT_CUSTOMIZERS);
 	}
 
-	private static String[] processActiveProfiles(@Nullable String[] activeProfiles) {
-		if (activeProfiles == null) {
+	private static String[] processUniqueStrings(@Nullable String[] array) {
+		if (array == null) {
 			return EMPTY_STRING_ARRAY;
 		}
 
 		// Active profiles must be unique
-		Set<String> profilesSet = new LinkedHashSet<>(Arrays.asList(activeProfiles));
+		Set<String> profilesSet = new LinkedHashSet<>(Arrays.asList(array));
 		return StringUtils.toStringArray(profilesSet);
 	}
 

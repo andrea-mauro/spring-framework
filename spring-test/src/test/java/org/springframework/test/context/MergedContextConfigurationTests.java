@@ -106,6 +106,18 @@ class MergedContextConfigurationTests {
 	}
 
 	@Test
+	void hashCodeWithSameDuplicateLocations() {
+		String[] locations1 = new String[] { "foo", "bar}" };
+		String[] locations2 = new String[] { "foo", "bar}", "foo", "bar}" };
+		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), locations1,
+																				  EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), locations2,
+																				  EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+		assertThat(mergedConfig2.hashCode()).isEqualTo(mergedConfig1.hashCode());
+	}
+
+
+	@Test
 	void hashCodeWithSameConfigClasses() {
 		Class<?>[] classes = new Class<?>[] { String.class, Integer.class };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
